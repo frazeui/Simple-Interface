@@ -1,37 +1,36 @@
-
 document.addEventListener("DOMContentLoaded", () => {
+
   const form = document.querySelector("form");
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const username = form.username.value.trim();
-    const password = form.password.value;
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
 
+    // Check empty fields
+    if (!email || !password) {
+      alert(" All fields are required!");
+      return;
+    }
+
+    // Check if user exists
     const savedUser = JSON.parse(localStorage.getItem("user"));
 
     if (!savedUser) {
-      alert(" No account found! Please register first.");
+      alert(" No account found. Please register first!");
       return;
     }
 
-    if (username !== savedUser.username || password !== savedUser.password) {
-      alert(" Incorrect Username or Password!");
-      return;
+    // Validate login
+    if (savedUser.email === email && savedUser.password === password) {
+      alert(` Welcome, ${savedUser.username}! Login successful.`);
+      // redirect to home or dashboard
+      window.location.href = "first.html";
+    } else {
+      alert(" Incorrect email or password!");
     }
 
-    // Add loading animation
-    form.classList.add("form-submitting");
-
-    setTimeout(() => {
-      form.classList.remove("form-submitting");
-      form.classList.add("form-success");
-
-      setTimeout(() => {
-        alert(" Login Successful!");
-        window.location.href = "first.html"; // redirect to homepage
-      }, 700);
-
-    }, 1500);
   });
+
 });

@@ -1,38 +1,38 @@
-
 document.addEventListener("DOMContentLoaded", () => {
+
   const form = document.querySelector("form");
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // prevent page reload
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
     const username = form.username.value.trim();
     const email = form.email.value.trim();
-    const password = form.password.value;
-    const confirmPassword = form.confirm_password.value;
+    const password = form.password.value.trim();
+    const confirmPassword = form.confirm_password.value.trim();
 
-    // Password check
-    if (password !== confirmPassword) {
-      alert(" Passwords do NOT match! Please try again.");
+    // Check empty fields
+    if (!username || !email || !password || !confirmPassword) {
+      alert(" All fields are required!");
       return;
     }
 
-    // Add submitting animation
-    form.classList.add("form-submitting");
+    // Check password match
+    if (password !== confirmPassword) {
+      alert(" Passwords do not match!");
+      return;
+    }
 
-    setTimeout(() => {
-      // Save user data
-      const user = { username, email, password };
-      localStorage.setItem("user", JSON.stringify(user));
+    // Save user details in localStorage
+    const userData = {
+      username,
+      email,
+      password
+    };
 
-      // Success animation
-      form.classList.remove("form-submitting");
-      form.classList.add("form-success");
+    localStorage.setItem("user", JSON.stringify(userData));
 
-      setTimeout(() => {
-        alert(" Registration Successful! Redirecting to Login...");
-        window.location.href = "login.html";
-      }, 700);
-
-    }, 1500);
+    alert(" Registration successful! You can now login.");
+    window.location.href = "login.html";
   });
+
 });
